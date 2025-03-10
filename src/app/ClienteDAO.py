@@ -1,14 +1,20 @@
+#Lucas Pinheiro de Oliveira
+
 from fastapi import APIRouter
 from domain.entities.Cliente import Cliente
 
 import db
 from infra.orm.ClienteModel import ClienteDB
 
-router = APIRouter()
+from typing import Annotated
+from fastapi import Depends
+from security import get_current_active_user, User
+
+router = APIRouter(dependencies=[Depends(get_current_active_user)])
 # Criar as rotas/endpoints: GET, POST, PUT, DELETE
 
-@router.get("/cliente/", tags=["Cliente"])
-async def get_cliente():
+@router.get("/cliente/", tags=["Cliente"], dependencies=[Depends(get_current_active_user)],)
+async def get_cliente(current_user:Annotated[User, Depends(get_current_active_user)],):
     try:
         session = db.Session()
         # busca todos

@@ -5,13 +5,17 @@ from domain.entities.Produto import Produto
 import db
 from infra.orm.ProdutoModel import ProdutoDB
 
-router = APIRouter()
+from typing import Annotated
+from fastapi import Depends
+from security import get_current_active_user, User
+
+router = APIRouter(dependencies=[Depends(get_current_active_user)])
 
 # Criar as rotas/endpoints: GET, POST, PUT, DELETE
 
 
-@router.get("/produto/", tags=["Produto"])
-async def get_produtos():
+@router.get("/produto/", tags=["Produto"], dependencies=[Depends(get_current_active_user)],)
+async def get_produtos(current_user:Annotated[User, Depends(get_current_active_user)],):
     try:
         session = db.Session()
         # busca todos os produtos

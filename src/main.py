@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from settings import HOST, PORT, RELOAD
 import uvicorn
 
+import security
 from app import FuncionarioDAO
 from app import ClienteDAO
 from app import ProdutoDAO
@@ -25,6 +26,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 # Mapeamento das rotas/endpoints
+
+app.include_router(security.router)
 app.include_router(FuncionarioDAO.router)
 app.include_router(ClienteDAO.router)
 app.include_router(ProdutoDAO.router)

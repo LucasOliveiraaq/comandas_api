@@ -34,3 +34,8 @@ else:  # Default SQLite
     STR_DATABASE = f"sqlite:///apiDatabase.db"
 
 print("String de conexão:", STR_DATABASE)
+
+# Configurações Segurança da API
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
