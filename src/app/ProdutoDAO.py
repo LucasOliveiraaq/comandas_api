@@ -1,13 +1,13 @@
 # Lucas Pinheiro de Oliveira
 
 from fastapi import APIRouter
-from domain.entities.Produto import Produto
-import db
-from infra.orm.ProdutoModel import ProdutoDB
+from src.domain.entities.Produto import Produto
+import src.db
+from src.infra.orm.ProdutoModel import ProdutoDB
 
 from typing import Annotated
 from fastapi import Depends
-from security import get_current_active_user, User
+from src.security import get_current_active_user, User
 
 router = APIRouter(dependencies=[Depends(get_current_active_user)])
 
@@ -17,7 +17,7 @@ router = APIRouter(dependencies=[Depends(get_current_active_user)])
 @router.get("/produto/", tags=["Produto"], dependencies=[Depends(get_current_active_user)],)
 async def get_produtos(current_user:Annotated[User, Depends(get_current_active_user)],):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca todos os produtos
         dados = session.query(ProdutoDB).all()
         return dados, 200
@@ -30,7 +30,7 @@ async def get_produtos(current_user:Annotated[User, Depends(get_current_active_u
 @router.get("/produto/{id}", tags=["Produto"])
 async def get_produto(id: int):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca um produto pelo ID
         dados = session.query(ProdutoDB).filter(ProdutoDB.id_produto == id).one()
         return dados, 200
@@ -43,7 +43,7 @@ async def get_produto(id: int):
 @router.post("/produto/", tags=["Produto"])
 async def post_produto(corpo: Produto):
     try:
-        session = db.Session()
+        session = src.db.Session()
         dados = ProdutoDB(
             nome=corpo.nome,
             descricao=corpo.descricao,
@@ -64,7 +64,7 @@ async def post_produto(corpo: Produto):
 @router.put("/produto/{id}", tags=["Produto"])
 async def put_produto(id: int, corpo: Produto):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca os dados atuais pelo id
         dados = session.query(ProdutoDB).filter(ProdutoDB.id_produto == id).one()
         # atualiza os dados com base no corpo da requisição
@@ -85,7 +85,7 @@ async def put_produto(id: int, corpo: Produto):
 @router.delete("/produto/{id}", tags=["Produto"])
 async def delete_produto(id: int):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca os dados atuais pelo id
         dados = session.query(ProdutoDB).filter(ProdutoDB.id_produto == id).one()
         session.delete(dados)

@@ -1,7 +1,7 @@
-import db
+import src.db
 from sqlalchemy import Column, VARCHAR, Integer
 
-class ClienteDB(db.Base):
+class ClienteDB(src.db.Base):
     __tablename__ = 'tb_cliente'
 
     id_cliente = Column(Integer, primary_key=True, autoincrement=True, index=True)

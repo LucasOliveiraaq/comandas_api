@@ -1,14 +1,14 @@
 #Lucas Pinheiro de Oliveira
 
 from fastapi import APIRouter
-from domain.entities.Cliente import Cliente
+from src.domain.entities.Cliente import Cliente
 
-import db
-from infra.orm.ClienteModel import ClienteDB
+import src.db
+from src.infra.orm.ClienteModel import ClienteDB
 
 from typing import Annotated
 from fastapi import Depends
-from security import get_current_active_user, User
+from src.security import get_current_active_user, User
 
 router = APIRouter(dependencies=[Depends(get_current_active_user)])
 # Criar as rotas/endpoints: GET, POST, PUT, DELETE
@@ -16,7 +16,7 @@ router = APIRouter(dependencies=[Depends(get_current_active_user)])
 @router.get("/cliente/", tags=["Cliente"], dependencies=[Depends(get_current_active_user)],)
 async def get_cliente(current_user:Annotated[User, Depends(get_current_active_user)],):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca todos
         dados = session.query(ClienteDB).all()
         return dados, 200
@@ -29,7 +29,7 @@ async def get_cliente(current_user:Annotated[User, Depends(get_current_active_us
 @router.get("/cliente/{id}", tags=["Cliente"])
 async def get_cliente(id: int):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca um com filtro
         dados = session.query(ClienteDB).filter(
             ClienteDB.id_cliente == id).all()
@@ -43,7 +43,7 @@ async def get_cliente(id: int):
 @router.post("/cliente/", tags=["Cliente"])
 async def post_cliente(corpo: Cliente):
     try:
-        session = db.Session()
+        session = src.db.Session()
         dados = ClienteDB(
             nome=corpo.nome,
             cpf=corpo.cpf,
@@ -63,7 +63,7 @@ async def post_cliente(corpo: Cliente):
 @router.put("/cliente/{id}", tags=["Cliente"])
 async def put_cliente(id: int, corpo: Cliente):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca os dados atuais pelo id
         dados = session.query(ClienteDB).filter(
             ClienteDB.id_cliente == id).one()
@@ -84,7 +84,7 @@ async def put_cliente(id: int, corpo: Cliente):
 @router.delete("/cliente/{id}", tags=["Cliente"])
 async def delete_cliente(id: int):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca os dados atuais pelo id
         dados = session.query(ClienteDB).filter(
             ClienteDB.id_cliente == id).one()
@@ -101,7 +101,7 @@ async def delete_cliente(id: int):
 @router.get("/cliente/cpf/{cpf}", tags=["Cliente - Valida CPF"])
 async def cpf_cliente(cpf: str):
     try:
-        session = db.Session()
+        session = src.db.Session()
         # busca um com filtro, retornando os dados cadastrados
         dados = session.query(ClienteDB).filter(ClienteDB.cpf == cpf).all()
         return dados, 200

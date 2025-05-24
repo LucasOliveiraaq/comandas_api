@@ -1,7 +1,7 @@
-import db
+import src.db
 from sqlalchemy import Column, VARCHAR, CHAR, Integer
 
-class FuncionarioDB(db.Base):
+class FuncionarioDB(src.db.Base):
     __tablename__ = 'tb_funcionario'
 
     id_funcionario = Column(Integer, primary_key=True, autoincrement=True, index=True)

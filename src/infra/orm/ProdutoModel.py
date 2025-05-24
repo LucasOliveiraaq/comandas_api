@@ -1,7 +1,7 @@
-import db
+import src.db
 from sqlalchemy import Column, VARCHAR, Integer, Float, LargeBinary
 
-class ProdutoDB(db.Base):
+class ProdutoDB(src.db.Base):
     __tablename__ = 'tb_produto'
 
     id_produto = Column(Integer, primary_key=True, autoincrement=True, index=True)

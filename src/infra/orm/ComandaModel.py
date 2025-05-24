@@ -1,10 +1,10 @@
-import db
+import src.db
 from sqlalchemy import Column, VARCHAR, Integer, DateTime, DECIMAL, ForeignKey
-from infra.orm.ProdutoModel import ProdutoDB
-from infra.orm.FuncionarioModel import FuncionarioDB
-from infra.orm.ClienteModel import ClienteDB
+from src.infra.orm.ProdutoModel import ProdutoDB
+from src.infra.orm.FuncionarioModel import FuncionarioDB
+from src.infra.orm.ClienteModel import ClienteDB
 # ORM
-class ComandaDB(db.Base):
+class ComandaDB(src.db.Base):
     __tablename__ = 'tb_comanda'
     
     id_comanda = Column(Integer, primary_key=True, autoincrement=True, index=True)
@@ -21,7 +21,7 @@ class ComandaDB(db.Base):
         self.status = status
         self.funcionario_id = funcionario_id
         self.cliente_id = cliente_id
-class ComandaProdutoDB(db.Base):
+class ComandaProdutoDB(src.db.Base):
     __tablename__ = 'tb_comanda_produto'
     
     id_comanda_produto = Column(Integer, primary_key=True, autoincrement=True, index=True)
